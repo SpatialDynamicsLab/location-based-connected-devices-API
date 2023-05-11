@@ -19,39 +19,39 @@ class DeviceData(models.Model):
         null=False,
         blank=False
     )
-    location_timestamp = models.DateTimeField(
+    location_timeStamp = models.DateTimeField(
         null=False,
         blank=False
     )
-    location_position_type = models.CharField(
+    location_positionType = models.CharField(
         null=True,
         blank=True,
     )
-    location_horizontal_accuracy = models.FloatField(
+    location_horizontalAccuracy = models.FloatField(
         null=True,
         blank=True,
     )
-    location_vertical_accuracy = models.FloatField(
+    location_verticalAccuracy = models.FloatField(
         null=True,
         blank=True,
     )
-    location_is_inaccurate = models.BooleanField(
+    location_isInaccurate = models.BooleanField(
         null=True,
         blank=True,
     )
-    location_is_old = models.BooleanField(
+    location_isOld = models.BooleanField(
         null=True,
         blank=True,
     )
-    location_finished = models.BooleanField(
+    location_locationFinished = models.BooleanField(
         null=True,
         blank=True,
     )
-    battery_level = models.FloatField(
+    batteryLevel = models.FloatField(
         null=True,
         blank=True,
     )
-    battery_status = models.CharField(
+    batteryStatus = models.CharField(
         null=True,
         blank=True,
     )
