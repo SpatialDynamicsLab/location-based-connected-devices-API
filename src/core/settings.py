@@ -165,7 +165,7 @@ DEFAULT_RENDERER_CLASSES = (
 )
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 50,
+    'PAGE_SIZE': 25,
     'PAGINATE_BY_PARAM': 'page_size',
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.LimitOffsetPagination',
