@@ -1,6 +1,8 @@
 import logging
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import (
     DeviceDataInputSerializer,
@@ -9,6 +11,15 @@ from api.serializers import (
 from api.models import DeviceData
 
 logger = logging.getLogger(__name__)
+
+
+class APIRootView(APIView):
+    def get(self, request):
+        response_data = {
+            "API status": "Alive",
+            "devices-data": request.build_absolute_uri('/api/v1/devices-data'),
+        }
+        return Response(response_data)
 
 
 class DeviceDataView(ModelViewSet):

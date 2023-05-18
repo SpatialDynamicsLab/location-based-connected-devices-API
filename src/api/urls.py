@@ -4,6 +4,7 @@ from django.conf import settings
 
 # Local Libraries
 from api.views import (
+    APIRootView,
     DeviceDataView
 )
 
@@ -18,5 +19,6 @@ router.register(
 
 app_name = 'devices-data'
 urlpatterns = [
+    path('', APIRootView.as_view(), name='api-root'),
     path('', include(router.urls)),
 ]
