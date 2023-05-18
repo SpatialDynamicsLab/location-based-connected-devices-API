@@ -21,3 +21,4 @@ djangorestframework-simplejwt
 django-anymail
 wheel
 djangorestframework-gis
+gunicorn
