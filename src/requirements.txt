@@ -22,3 +22,4 @@ django-anymail
 wheel
 djangorestframework-gis
 gunicorn
+djangorestframework-csv

@@ -1,9 +1,10 @@
 import logging
 from datetime import datetime
+from django.contrib.gis.geos import Point
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from django.contrib.gis.geos import Point
+from rest_framework_csv.renderers import CSVRenderer
 
 from api.models import DeviceData
 
@@ -87,3 +88,35 @@ class DeviceDataOutputSerializer(GeoFeatureModelSerializer):
             'batteryLevel',
             'batteryStatus'
         )
+
+
+class DeviceDataCSVSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeviceData
+        # fields = '__all__'
+        fields = (
+            'id',
+            'identifier',
+            'name',
+            'longitude',
+            'latitude',
+            'location_timeStamp',
+            'location_positionType',
+            'location_horizontalAccuracy',
+            'location_verticalAccuracy',
+            'location_isInaccurate',
+            'location_isOld',
+            'location_locationFinished',
+            'batteryLevel',
+            'batteryStatus'
+        )
+        csv_export = True
+        csv_separator = ','
+
+    @staticmethod
+    def get_csv_renderer():
+        return CSVRenderer()
+
+    @staticmethod
+    def get_csv_terminator():
+        return '\r\n'

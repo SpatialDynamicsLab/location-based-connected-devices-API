@@ -162,6 +162,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_RENDERER_CLASSES = (
     'rest_framework.renderers.JSONRenderer',
+    'rest_framework_csv.renderers.CSVRenderer',
 )
 
 REST_FRAMEWORK = {

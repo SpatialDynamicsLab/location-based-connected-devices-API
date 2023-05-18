@@ -1,12 +1,16 @@
 import logging
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.settings import api_settings
+from rest_framework.renderers import JSONRenderer
+from rest_framework_csv.renderers import CSVRenderer
+
 from api.serializers import (
     DeviceDataInputSerializer,
     DeviceDataOutputSerializer,
+    DeviceDataCSVSerializer
 )
 from api.models import DeviceData
 
@@ -17,7 +21,12 @@ class APIRootView(APIView):
     def get(self, request):
         response_data = {
             "API status": "Alive",
-            "devices-data": request.build_absolute_uri('/api/v1/devices-data'),
+            "devices data": {
+                "geojson": request.build_absolute_uri(
+                    '/api/v1/devices/'),
+                "csv-download": request.build_absolute_uri(
+                    '/api/v1/devices/csv/'),
+            }
         }
         return Response(response_data)
 
@@ -63,3 +72,11 @@ class DeviceDataView(ModelViewSet):
                 'message': str(ex)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+class DeviceCSVDownloadView(APIView):
+    renderer_classes = [CSVRenderer]
+
+    def get(self, request, format=None):
+        queryset = DeviceData.objects.all()
+        serializer = DeviceDataCSVSerializer(queryset, many=True)
+        return Response(serializer.data, content_type='text/csv')
