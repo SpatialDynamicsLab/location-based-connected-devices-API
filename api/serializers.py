@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class DeviceDataInputSerializer(ModelSerializer):
-
+    device_id = serializers.CharField(write_only=True, allow_null=True)
     location_latitude = serializers.FloatField(write_only=True)
     location_longitude = serializers.FloatField(write_only=True)
     location_timeStamp = serializers.IntegerField(write_only=True)
@@ -19,6 +19,7 @@ class DeviceDataInputSerializer(ModelSerializer):
     class Meta:
         model = DeviceData
         fields = (
+            'device_id',
             'identifier',
             'name',
             'location_latitude',
@@ -34,8 +35,20 @@ class DeviceDataInputSerializer(ModelSerializer):
             'batteryStatus'
         )
 
+        # for key, value in attrs.items():
+        #     print(key)
+        #     if isinstance(value, str) and value.isdigit() or value.isnumeric():
+        #         attrs[key] = float(value)
+        #     if isinstance(value, str) and \
+        #             type(self.fields[key].model_field).__name__ == 'float':
+        #         attrs[key] = None
+        # return attrs
+
     def create(self, validated_data):
         try:
+            device_id = validated_data.pop('device_id')
+            if device_id and device_id != 'NULL':
+                validated_data['identifier'] = device_id
             latitude = validated_data.pop('location_latitude')
             longitude = validated_data.pop('location_longitude')
             geom = Point(float(latitude), float(longitude))
