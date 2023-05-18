@@ -21,7 +21,7 @@ class APIRootView(APIView):
     def get(self, request):
         response_data = {
             "API status": "Alive",
-            "devices data": {
+            "devices-data": {
                 "geojson": request.build_absolute_uri(
                     '/api/v1/devices/'),
                 "csv-download": request.build_absolute_uri(
