@@ -1,10 +1,9 @@
 import logging
+from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.settings import api_settings
-from rest_framework.renderers import JSONRenderer
 from rest_framework_csv.renderers import CSVRenderer
 
 from api.serializers import (
@@ -22,10 +21,14 @@ class APIRootView(APIView):
         response_data = {
             "API status": "Alive",
             "devices-data": {
+                "geojson-api": request.build_absolute_uri(
+                    '/api/v1/devices/data/'),
                 "geojson": request.build_absolute_uri(
-                    '/api/v1/devices/'),
+                    '/api/v1/devices/geojson/'),
+                "geojson-download": request.build_absolute_uri(
+                              '/api/v1/devices/geojson/download/'),
                 "csv-download": request.build_absolute_uri(
-                    '/api/v1/devices/csv/'),
+                    '/api/v1/devices/csv/download/'),
             }
         }
         return Response(response_data)
@@ -73,10 +76,33 @@ class DeviceDataView(ModelViewSet):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class DeviceGeoJSONView(APIView):
+    def get(self, request, format=None):
+        device_data = DeviceData.objects.all()
+        serializer = DeviceDataOutputSerializer(device_data, many=True)
+        response = Response(serializer.data, content_type='application/json')
+        return response
+
+
+class DeviceGeoJSONDownloadView(APIView):
+    def get(self, request, format=None):
+        device_data = DeviceData.objects.all()
+        serializer = DeviceDataOutputSerializer(device_data, many=True)
+        response = Response(serializer.data, content_type='application/geojson')
+        response['Content-Disposition'] =\
+            'attachment; filename="devices-data.geojson"'
+        return response
+
+
 class DeviceCSVDownloadView(APIView):
     renderer_classes = [CSVRenderer]
 
     def get(self, request, format=None):
-        queryset = DeviceData.objects.all()
-        serializer = DeviceDataCSVSerializer(queryset, many=True)
-        return Response(serializer.data, content_type='text/csv')
+        device_data = DeviceData.objects.all()
+        serializer = DeviceDataCSVSerializer(device_data, many=True)
+        response = Response(serializer.data, content_type='text/csv')
+        response['Content-Disposition'] = \
+            'attachment; filename="devices-data.csv"'
+        return response
+
+

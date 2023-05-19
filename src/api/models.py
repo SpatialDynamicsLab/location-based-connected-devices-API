@@ -65,8 +65,8 @@ class DeviceData(models.Model):
 
     @property
     def longitude(self):
-        return self.location.x
+        return self.location.y
 
     @property
     def latitude(self):
-        return self.location.y
+        return self.location.x
