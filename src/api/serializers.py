@@ -41,9 +41,9 @@ class DeviceDataInputSerializer(ModelSerializer):
             device_id = validated_data.pop('device_id')
             if device_id and device_id != 'NULL':
                 validated_data['identifier'] = device_id
-            latitude = validated_data.pop('location_latitude')
             longitude = validated_data.pop('location_longitude')
-            geom = Point(float(latitude), float(longitude))
+            latitude = validated_data.pop('location_latitude')
+            geom = Point(float(longitude), float(latitude))
             validated_data['location'] = geom
             timestamp_data = validated_data.pop('location_timeStamp')
             if len(str(timestamp_data)) == 13:
@@ -67,8 +67,8 @@ class DeviceDataOutputSerializer(GeoFeatureModelSerializer):
             'id',
             'identifier',
             'name',
-            'latitude',
             'longitude',
+            'latitude',
             'location_timeStamp',
             'location_positionType',
             'location_horizontalAccuracy',
@@ -88,8 +88,8 @@ class DeviceDataCSVSerializer(serializers.ModelSerializer):
             'id',
             'identifier',
             'name',
-            'latitude',
             'longitude',
+            'latitude',
             'location_timeStamp',
             'location_positionType',
             'location_horizontalAccuracy',
