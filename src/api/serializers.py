@@ -36,15 +36,6 @@ class DeviceDataInputSerializer(ModelSerializer):
             'batteryStatus'
         )
 
-        # for key, value in attrs.items():
-        #     print(key)
-        #     if isinstance(value, str) and value.isdigit() or value.isnumeric():
-        #         attrs[key] = float(value)
-        #     if isinstance(value, str) and \
-        #             type(self.fields[key].model_field).__name__ == 'float':
-        #         attrs[key] = None
-        # return attrs
-
     def create(self, validated_data):
         try:
             device_id = validated_data.pop('device_id')
@@ -93,7 +84,6 @@ class DeviceDataOutputSerializer(GeoFeatureModelSerializer):
 class DeviceDataCSVSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeviceData
-        # fields = '__all__'
         fields = (
             'id',
             'identifier',

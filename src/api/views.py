@@ -1,5 +1,4 @@
 import logging
-from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -77,7 +76,7 @@ class DeviceDataView(ModelViewSet):
 
 
 class DeviceGeoJSONView(APIView):
-    def get(self, request, format=None):
+    def get(self, request):
         device_data = DeviceData.objects.all()
         serializer = DeviceDataOutputSerializer(device_data, many=True)
         response = Response(serializer.data, content_type='application/json')
@@ -85,7 +84,7 @@ class DeviceGeoJSONView(APIView):
 
 
 class DeviceGeoJSONDownloadView(APIView):
-    def get(self, request, format=None):
+    def get(self, request):
         device_data = DeviceData.objects.all()
         serializer = DeviceDataOutputSerializer(device_data, many=True)
         response = Response(serializer.data, content_type='application/geojson')
@@ -97,7 +96,7 @@ class DeviceGeoJSONDownloadView(APIView):
 class DeviceCSVDownloadView(APIView):
     renderer_classes = [CSVRenderer]
 
-    def get(self, request, format=None):
+    def get(self, request):
         device_data = DeviceData.objects.all()
         serializer = DeviceDataCSVSerializer(device_data, many=True)
         response = Response(serializer.data, content_type='text/csv')

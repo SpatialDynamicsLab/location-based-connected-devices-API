@@ -2,7 +2,6 @@ from django.urls import path, include
 from rest_framework import routers
 from django.conf import settings
 
-# Local Libraries
 from api.views import (
     APIRootView,
     DeviceDataView,

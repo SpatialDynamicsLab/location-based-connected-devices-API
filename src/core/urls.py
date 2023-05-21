@@ -22,7 +22,6 @@ urlpatterns = [
     path('', lambda x: redirect('/api/v1/')),
     path('admin/', admin.site.urls),
     path('api/', include([
-        # path('auth/token/', obtain_auth_token),
         # API Version 1
         path('v1/', include("api.urls", namespace="device-data")),
         ])
