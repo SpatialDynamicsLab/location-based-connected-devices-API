@@ -1,11 +1,10 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_csv.renderers import CSVRenderer
-from django_filters.rest_framework import DjangoFilterBackend
 from api.filters import DatesFilter
 
 from api.serializers import (
@@ -52,10 +51,25 @@ class DeviceDataView(ModelViewSet):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'date' in filter_params and filter_params['date'].lower() == 'today':
-            # If 'date' is 'today', get today's date
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'today':
+            # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'week':
+            past_week_start_date = datetime.now().date() - timedelta(days=7)
+            filter_params = {
+                'start_date': past_week_start_date,
+                'end_date': datetime.now().date(),
+            }
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'month':
+            past_month_start_date = datetime.now().date() - timedelta(days=30)
+            filter_params = {
+                'start_date': past_month_start_date,
+                'end_date': datetime.now().date(),
+            }
         location_filter = DatesFilter(filter_params, queryset=queryset)
         if location_filter.is_valid():
             queryset = location_filter.qs
@@ -96,10 +110,25 @@ class DeviceGeoJSONView(APIView):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'date' in filter_params and filter_params['date'].lower() == 'today':
-            # If 'date' is 'today', get today's date
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'today':
+            # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'week':
+            past_week_start_date = datetime.now().date() - timedelta(days=7)
+            filter_params = {
+                'start_date': past_week_start_date,
+                'end_date': datetime.now().date(),
+            }
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'month':
+            past_month_start_date = datetime.now().date() - timedelta(days=30)
+            filter_params = {
+                'start_date': past_month_start_date,
+                'end_date': datetime.now().date(),
+            }
         location_filter = DatesFilter(filter_params, queryset=queryset)
         if location_filter.is_valid():
             queryset = location_filter.qs
@@ -117,10 +146,25 @@ class DeviceGeoJSONDownloadView(APIView):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'date' in filter_params and filter_params['date'].lower() == 'today':
-            # If 'date' is 'today', get today's date
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'today':
+            # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'week':
+            past_week_start_date = datetime.now().date() - timedelta(days=7)
+            filter_params = {
+                'start_date': past_week_start_date,
+                'end_date': datetime.now().date(),
+            }
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'month':
+            past_month_start_date = datetime.now().date() - timedelta(days=30)
+            filter_params = {
+                'start_date': past_month_start_date,
+                'end_date': datetime.now().date(),
+            }
         location_filter = DatesFilter(filter_params, queryset=queryset)
         if location_filter.is_valid():
             queryset = location_filter.qs
@@ -141,10 +185,25 @@ class DeviceCSVDownloadView(APIView):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'date' in filter_params and filter_params['date'].lower() == 'today':
-            # If 'date' is 'today', get today's date
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'today':
+            # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'week':
+            past_week_start_date = datetime.now().date() - timedelta(days=7)
+            filter_params = {
+                'start_date': past_week_start_date,
+                'end_date': datetime.now().date(),
+            }
+        if 'filter' in filter_params \
+                and filter_params['filter'].lower() == 'month':
+            past_month_start_date = datetime.now().date() - timedelta(days=30)
+            filter_params = {
+                'start_date': past_month_start_date,
+                'end_date': datetime.now().date(),
+            }
         location_filter = DatesFilter(filter_params, queryset=queryset)
         if location_filter.is_valid():
             queryset = location_filter.qs
