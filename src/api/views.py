@@ -1,9 +1,12 @@
 import logging
+from datetime import datetime
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework_csv.renderers import CSVRenderer
+from django_filters.rest_framework import DjangoFilterBackend
+from api.filters import DatesFilter
 
 from api.serializers import (
     DeviceDataInputSerializer,
@@ -35,15 +38,28 @@ class APIRootView(APIView):
 
 class DeviceDataView(ModelViewSet):
     http_method_names = ["post", "get", "put"]
-    queryset = DeviceData.objects.all()
+    # queryset = DeviceData.objects.all()
     serializer_classes = {
         "create": DeviceDataInputSerializer,
         "list": DeviceDataOutputSerializer,
         "retrieve": DeviceDataOutputSerializer,
         "update": DeviceDataInputSerializer,
     }
-
     default_serializer_class = DeviceDataOutputSerializer
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_class = DatesFilter
+
+    def get_queryset(self):
+        queryset = DeviceData.objects.all()
+        filter_params = self.request.GET.copy()
+        if 'date' in filter_params and filter_params['date'].lower() == 'today':
+            # If 'date' is 'today', get today's date
+            today = datetime.now().date()
+            filter_params['date'] = today
+        location_filter = DatesFilter(filter_params, queryset=queryset)
+        if location_filter.is_valid():
+            queryset = location_filter.qs
+        return queryset
 
     def get_serializer_class(self):
         return self.serializer_classes.get(
@@ -76,16 +92,42 @@ class DeviceDataView(ModelViewSet):
 
 
 class DeviceGeoJSONView(APIView):
+
+    def get_queryset(self):
+        queryset = DeviceData.objects.all()
+        filter_params = self.request.GET.copy()
+        if 'date' in filter_params and filter_params['date'].lower() == 'today':
+            # If 'date' is 'today', get today's date
+            today = datetime.now().date()
+            filter_params['date'] = today
+        location_filter = DatesFilter(filter_params, queryset=queryset)
+        if location_filter.is_valid():
+            queryset = location_filter.qs
+        return queryset
+
     def get(self, request):
-        device_data = DeviceData.objects.all()
+        device_data = self.get_queryset()
         serializer = DeviceDataOutputSerializer(device_data, many=True)
         response = Response(serializer.data, content_type='application/json')
         return response
 
 
 class DeviceGeoJSONDownloadView(APIView):
+
+    def get_queryset(self):
+        queryset = DeviceData.objects.all()
+        filter_params = self.request.GET.copy()
+        if 'date' in filter_params and filter_params['date'].lower() == 'today':
+            # If 'date' is 'today', get today's date
+            today = datetime.now().date()
+            filter_params['date'] = today
+        location_filter = DatesFilter(filter_params, queryset=queryset)
+        if location_filter.is_valid():
+            queryset = location_filter.qs
+        return queryset
+
     def get(self, request):
-        device_data = DeviceData.objects.all()
+        device_data = self.get_queryset()
         serializer = DeviceDataOutputSerializer(device_data, many=True)
         response = Response(serializer.data, content_type='application/geojson')
         response['Content-Disposition'] =\
@@ -96,8 +138,20 @@ class DeviceGeoJSONDownloadView(APIView):
 class DeviceCSVDownloadView(APIView):
     renderer_classes = [CSVRenderer]
 
+    def get_queryset(self):
+        queryset = DeviceData.objects.all()
+        filter_params = self.request.GET.copy()
+        if 'date' in filter_params and filter_params['date'].lower() == 'today':
+            # If 'date' is 'today', get today's date
+            today = datetime.now().date()
+            filter_params['date'] = today
+        location_filter = DatesFilter(filter_params, queryset=queryset)
+        if location_filter.is_valid():
+            queryset = location_filter.qs
+        return queryset
+
     def get(self, request):
-        device_data = DeviceData.objects.all()
+        device_data = self.get_queryset()
         serializer = DeviceDataCSVSerializer(device_data, many=True)
         response = Response(serializer.data, content_type='text/csv')
         response['Content-Disposition'] = \
