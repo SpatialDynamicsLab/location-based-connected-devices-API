@@ -51,20 +51,20 @@ class DeviceDataView(ModelViewSet):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'today':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'today':
             # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'week':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'week':
             past_week_start_date = datetime.now().date() - timedelta(days=7)
             filter_params = {
                 'start_date': past_week_start_date,
                 'end_date': datetime.now().date(),
             }
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'month':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'month':
             past_month_start_date = datetime.now().date() - timedelta(days=30)
             filter_params = {
                 'start_date': past_month_start_date,
@@ -110,20 +110,20 @@ class DeviceGeoJSONView(APIView):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'today':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'today':
             # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'week':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'week':
             past_week_start_date = datetime.now().date() - timedelta(days=7)
             filter_params = {
                 'start_date': past_week_start_date,
                 'end_date': datetime.now().date(),
             }
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'month':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'month':
             past_month_start_date = datetime.now().date() - timedelta(days=30)
             filter_params = {
                 'start_date': past_month_start_date,
@@ -146,20 +146,20 @@ class DeviceGeoJSONDownloadView(APIView):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'today':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'today':
             # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'week':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'week':
             past_week_start_date = datetime.now().date() - timedelta(days=7)
             filter_params = {
                 'start_date': past_week_start_date,
                 'end_date': datetime.now().date(),
             }
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'month':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'month':
             past_month_start_date = datetime.now().date() - timedelta(days=30)
             filter_params = {
                 'start_date': past_month_start_date,
@@ -185,20 +185,20 @@ class DeviceCSVDownloadView(APIView):
     def get_queryset(self):
         queryset = DeviceData.objects.all()
         filter_params = self.request.GET.copy()
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'today':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'today':
             # If 'fileter' is 'today', get today's date
             today = datetime.now().date()
             filter_params['date'] = today
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'week':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'week':
             past_week_start_date = datetime.now().date() - timedelta(days=7)
             filter_params = {
                 'start_date': past_week_start_date,
                 'end_date': datetime.now().date(),
             }
-        if 'filter' in filter_params \
-                and filter_params['filter'].lower() == 'month':
+        if 'query' in filter_params \
+                and filter_params['query'].lower() == 'month':
             past_month_start_date = datetime.now().date() - timedelta(days=30)
             filter_params = {
                 'start_date': past_month_start_date,
